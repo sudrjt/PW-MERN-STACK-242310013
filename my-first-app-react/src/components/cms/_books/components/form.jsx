@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/forms";
 import { Button } from "../../../ui/button";
 
-export default function BookForm({ onSubmit, onCancel }) {
+export default function BookForm({ onSubmit, onCancel, initialData }) {
   const [formData, setFormData] = useState({
-    bookTitle: "",
-    authorName: "",
-    isFree: false,
-    sinopsis: "",
-    story: "",
+    bookTitle: initialData?.title || "",
+    authorName: initialData?.author || "",
+    isFree: initialData?.is_free || false,
+    sinopsis: initialData?.sinopsis || "",
+    story: initialData?.story || "",
     coverImage: null,
     imagePreview: null,
   });
@@ -42,7 +42,7 @@ export default function BookForm({ onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p className="text-muted mb-4">Fill in the details for the new book.</p>
+      <p className="text-muted mb-4">Fill in the details for the book.</p>
       <div className="row">
         <div className="col-md-5">
           <TextInput
@@ -99,7 +99,7 @@ export default function BookForm({ onSubmit, onCancel }) {
             name="coverImage"
             onChange={handleChange}
             imagePreview={formData.imagePreview}
-            required
+            required={false}
           />
         </div>
       </div>

@@ -16,9 +16,60 @@ export function MBooks() {
       message: (
         <BookForm
           onSubmit={(data) => {
-            console.log("Data Buku Baru:", data);
+            const newBook = {
+              id: Date.now(),
+              title: data.bookTitle,
+              author: data.authorName,
+              language: "Indonesian",
+              rating: Math.floor(Math.random() * 5) + 1,
+              views: Math.floor(Math.random() * (1000 - 100 + 1)) + 100,
+              is_free: data.isFree,
+              sinopsis: data.sinopsis,
+              story: data.story,
+              img: data.coverImage
+                ? URL.createObjectURL(data.coverImage)
+                : "https://via.placeholder.com/150",
+            };
+            setBooks((prevBooks) => [...prevBooks, newBook]);
             alert("Buku berhasil ditambahkan!");
-            openModal({ open: false }); 
+            openModal({ open: false });
+          }}
+          onCancel={() => openModal({ open: false })}
+        />
+      ),
+      size: "xl",
+      closable: true,
+    });
+  };
+
+  const handleDeleteBook = (id) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus buku ini?")) {
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    }
+  };
+
+
+  const handleEditBook = (bookToEdit) => {
+    openModal({
+      header: "Edit Book",
+      message: (
+        <BookForm
+          initialData={bookToEdit}
+          onSubmit={(data) => {
+            setBooks((prevBooks) =>
+              prevBooks.map((b) =>
+                b.id === bookToEdit.id
+                  ? {
+                      ...b,
+                      title: data.bookTitle,
+                      author: data.authorName,
+                      is_free: data.isFree,
+                    }
+                  : b,
+              ),
+            );
+            alert("Data buku berhasil diperbarui!");
+            openModal({ open: false });
           }}
           onCancel={() => openModal({ open: false })}
         />
@@ -62,7 +113,12 @@ export function MBooks() {
           />
         </div>
       </div>
-      <Tabledata data={books} />
+
+      <Tabledata
+        data={books}
+        onEdit={handleEditBook}
+        onDelete={handleDeleteBook}
+      />
     </div>
   );
 }

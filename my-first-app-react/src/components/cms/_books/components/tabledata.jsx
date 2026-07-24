@@ -9,7 +9,7 @@ import {
   PaginationComponent,
 } from "@/components/ui/datatables";
 
-export default function Tabledata({ data }) {
+export default function Tabledata({ data, onEdit, onDelete }) {
   const [search, setSearch] = useState("");
   const [sorting, setSorting] = useState({ field: "", order: "" });
   const [totalitems, setTotalItems] = useState(0);
@@ -117,7 +117,7 @@ export default function Tabledata({ data }) {
                         variant="warning"
                         outline
                         className="btn-sm me-2"
-                        onClick={() => handleEdit(book)}
+                        onClick={() => onEdit(book)} 
                         title="Edit"
                       >
                         <i className="bi bi-pencil"></i>
@@ -126,7 +126,7 @@ export default function Tabledata({ data }) {
                         variant="danger"
                         outline
                         className="btn-sm me-2"
-                        onClick={() => handleDelete(book.id)}
+                        onClick={() => onDelete(book.id)} 
                         title="Delete"
                       >
                         <i className="bi bi-trash"></i>
